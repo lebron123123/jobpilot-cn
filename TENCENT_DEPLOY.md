@@ -18,7 +18,7 @@ git clone https://github.com/lebron123123/jobpilot-cn.git
 cd jobpilot-cn
 cp .env.production.example .env.production
 nano .env.production
-docker compose --env-file .env.production config
+docker compose --env-file .env.production config --quiet
 docker compose --env-file .env.production up -d --build
 docker compose --env-file .env.production ps
 curl -fsS https://你的域名/healthz
