@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JobPilot CN</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">J</span><div><strong>JobPilot CN</strong><small>求职工作台</small></div></div>
+    <nav id="nav">
+      <button class="nav active" data-view="dashboard">⌂<span>总览</span></button>
+      <button class="nav" data-view="resume">▣<span>简历中心</span></button>
+      <button class="nav" data-view="jobs">⌕<span>岗位匹配</span></button>
+      <button class="nav" data-view="batch">⇄<span>批量定制</span></button>
+      <button class="nav" data-view="apply">↗<span>投递中心</span></button>
+      <button class="nav" data-view="interview">◉<span>模拟面试</span></button>
+      <button class="nav" data-view="library">☷<span>问题与答案</span></button>
+    </nav>
+    <div class="privacy"><span class="dot"></span><div><b>本地优先</b><small>敏感资料默认不离开电脑</small></div></div>
+  </aside>
+  <main>
+    <header><div><p class="eyebrow" id="workspace-name">我的求职空间</p><h1 id="page-title">求职总览</h1></div><div class="header-actions"><span class="user-chip" id="current-user">用户</span><button class="secondary" id="logout-button">退出</button><button class="primary" data-go="jobs">开始匹配</button></div></header>
+    <section id="dashboard" class="view active">
+      <div class="hero"><div><span class="pill">独立账号 · 数据隔离</span><h2>从一份真实履历，生成每个岗位的最佳版本。</h2><p>每位用户拥有独立事实库。所有投递先预览，再由本人批准。</p><div class="hero-actions"><button class="primary" data-go="resume">上传并分析简历</button><button class="ghost" data-go="jobs">查看岗位池 →</button></div></div><div class="score-ring"><b>--</b><span>档案完整度</span></div></div>
+      <div class="stats"><article><span>岗位池</span><b>12</b><small>3 个强匹配</small></article><article><span>待定制</span><b>5</b><small>等待批量生成</small></article><article><span>待批准投递</span><b>3</b><small>不会自动提交</small></article><article><span>面试知识点</span><b>18</b><small>来自岗位与复盘</small></article></div>
+      <div class="grid two"><article class="panel"><div class="panel-head"><div><span class="kicker">NEXT BEST ACTION</span><h3>下一步建议</h3></div><button class="link" data-go="batch">进入批量定制</button></div><div class="task"><span class="task-icon coral">01</span><div><b>建立个人事实库</b><p>上传主简历，提取技能、项目经历和可验证的量化成果。</p></div></div><div class="task"><span class="task-icon">02</span><div><b>导入目标岗位</b><p>先查看匹配依据和差距，再生成岗位版简历。</p></div></div></article><article class="panel"><div class="panel-head"><div><span class="kicker">PIPELINE</span><h3>投递漏斗</h3></div></div><div class="funnel"><div style="--w:100%"><span>已发现</span><b>0</b></div><div style="--w:72%"><span>已定制</span><b>0</b></div><div style="--w:44%"><span>已投递</span><b>0</b></div><div style="--w:20%"><span>面试</span><b>0</b></div></div></article></div>
+    </section>
+    <section id="resume" class="view"><div class="section-intro"><div><span class="kicker">CAREER VAULT</span><h2>简历事实库</h2><p>上传主简历后，提取教育、经历、技能和量化成果。改写永远从事实库取材。</p></div><label class="upload"><input type="file" id="resume-file" accept=".pdf,.docx"><span>＋</span><b>上传简历</b><small>PDF / DOCX，保存到当前账号</small></label></div><div class="grid two"><article class="panel"><h3>当前档案</h3><div class="profile"><div class="avatar">候</div><div><b>尚未上传简历</b><p>等待建立个人事实库</p></div><span class="tag green">账号隔离</span></div><div class="facts"></div></article><article class="panel"><h3>分析结果</h3><div class="empty">上传简历后显示完整度、技能和可验证成果。</div></article></div></section>
+    <section id="jobs" class="view"><div class="toolbar"><div><span class="kicker">JOB DISCOVERY</span><h2>岗位匹配池</h2></div><div><button class="secondary">导入JD</button><button class="primary" id="scan-jobs">批量扫描</button></div></div><div class="filters"><button class="active">全部 12</button><button>强匹配 3</button><button>转型可投 5</button><button>不出差</button><input placeholder="搜索岗位或公司"></div><div id="job-list" class="job-list"></div></section>
+    <section id="batch" class="view"><div class="toolbar"><div><span class="kicker">BATCH TAILOR</span><h2>批量简历定制</h2><p>一次生成多个岗位版本，逐条查看修改依据。</p></div><button class="primary" id="generate-batch">生成选中版本</button></div><div class="batch-layout"><div id="batch-list" class="panel compact"></div><article class="panel diff"><div class="panel-head"><h3>修改预览</h3><span class="tag">事实锁定</span></div><div class="empty">选择岗位并生成后，这里会显示当前账号的定制内容与修改依据。</div></article></div></section>
+    <section id="apply" class="view"><div class="toolbar"><div><span class="kicker">HUMAN-IN-THE-LOOP</span><h2>投递中心</h2><p>浏览器自动填表，账号、验证码和最终提交由你控制。</p></div><button class="primary" id="connect-browser">连接浏览器</button></div><div class="safety-flow"><div class="done"><b>1</b><span>岗位筛选<small>自动</small></span></div><i></i><div class="done"><b>2</b><span>定制材料<small>自动</small></span></div><i></i><div><b>3</b><span>账号登录<small>你操作</small></span></div><i></i><div><b>4</b><span>填表预览<small>自动</small></span></div><i></i><div><b>5</b><span>最终提交<small>你批准</small></span></div></div><div class="panel"><div class="panel-head"><h3>待批准队列</h3><span class="tag amber">3项</span></div><table><thead><tr><th>岗位</th><th>材料版本</th><th>平台</th><th>状态</th><th></th></tr></thead><tbody><tr><td>无人机业务项目运营<br><small>美团 · 深圳</small></td><td>低空运营版 v1</td><td>猎聘</td><td><span class="tag amber">待登录</span></td><td><button class="secondary approve">预览</button></td></tr><tr><td>运营专员<br><small>乐丰技术 · 南山</small></td><td>金融运营版 v1</td><td>智联</td><td><span class="tag">待批准</span></td><td><button class="secondary approve">预览</button></td></tr></tbody></table></div></section>
+    <section id="interview" class="view"><div class="interview-hero"><div><span class="pill">合规模拟训练</span><h2>用真实岗位，练到能独立回答。</h2><p>语音模拟、追问、评分和薄弱项训练。实际面试时仅提供经允许的字幕与个人笔记，不提供隐蔽代答。</p><button class="primary" id="start-mock">开始模拟面试</button></div><div class="mic">◉<span>准备就绪</span></div></div><div class="grid three"><article class="panel"><span class="kicker">岗位题</span><h3>为什么选择这个岗位？</h3><p>建议结构：选择动机 → 可迁移能力 → 学习计划 → 岗位理解。</p></article><article class="panel"><span class="kicker">行为题</span><h3>讲一次复杂任务推进经历</h3><p>使用STAR结构，选择本人事实库中可验证的真实案例。</p></article><article class="panel"><span class="kicker">运营题</span><h3>如何建立项目推进台账？</h3><p>目标、节点、负责人、风险、升级机制、复盘指标。</p></article></div></section>
+    <section id="library" class="view"><div class="toolbar"><div><span class="kicker">INTERVIEW MEMORY</span><h2>问题与答案汇编</h2><p>把模拟题、真实面试回忆和改进答案沉淀为个人题库。</p></div><button class="primary" id="add-question">添加问题</button></div><div id="qa-list" class="qa-list"></div></section>
+  </main>
+  <div id="modal" class="modal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modal-close">×</button><div id="modal-body"></div></div></div>
+  <div id="toast" class="toast"></div>
+  <script src="auth.js"></script><script src="app.js"></script>
+</body></html>

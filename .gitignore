@@ -1,0 +1,27 @@
+# Dependencies and local tooling
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# User data and private artifacts
+data/
+generated/
+browser-results/
+browser-profile/
+screenshots/
+*.docx
+*.pdf
+
+# Runtime files
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+

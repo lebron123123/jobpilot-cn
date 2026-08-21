@@ -1,0 +1,13 @@
+{
+  "name": "jobpilot-cn",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "dev": "node server.js", "test": "node tests/auth-e2e.mjs && node tests/e2e-api.mjs" },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "docx": "9.6.1",
+    "jszip": "3.10.1",
+    "pdfjs-dist": "5.6.205",
+    "playwright": "1.62.1"
+  }
+}
