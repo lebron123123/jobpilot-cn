@@ -69,13 +69,19 @@ chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-在 GitHub 仓库 `Settings > Secrets and variables > Actions` 添加4个 Repository secrets：
+先把私钥转换成不会因网页粘贴而损坏的单行 Base64 文本：
+
+```bash
+base64 -w 0 ~/.ssh/jobpilot_github_actions
+```
+
+只把这条命令输出的完整单行内容粘贴到 GitHub，禁止截图或发送到聊天。在 GitHub 仓库 `Settings > Secrets and variables > Actions` 添加4个 Repository secrets：
 
 | Secret | 值 |
 | --- | --- |
 | `TENCENT_SERVER_HOST` | 服务器公网IP |
 | `TENCENT_SERVER_USER` | `ubuntu` |
-| `TENCENT_SERVER_SSH_KEY` | `cat ~/.ssh/jobpilot_github_actions` 的完整私钥，只粘贴到GitHub，禁止截图或发送到聊天 |
+| `TENCENT_SERVER_SSH_KEY_B64` | `base64 -w 0 ~/.ssh/jobpilot_github_actions` 输出的完整单行文本 |
 | `TENCENT_SERVER_KNOWN_HOSTS` | 下方命令输出的完整一行 |
 
 生成已固定的服务器Host Key记录：
