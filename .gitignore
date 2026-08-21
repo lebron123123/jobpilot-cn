@@ -8,11 +8,11 @@ dist/
 !.env.example
 
 # User data and private artifacts
-data/
-generated/
-browser-results/
-browser-profile/
-screenshots/
+/data/
+/generated/
+/browser-results/
+/browser-profile/
+/screenshots/
 *.docx
 *.pdf
 
