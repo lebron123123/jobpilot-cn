@@ -1,5 +1,6 @@
 # Dependencies and local tooling
 node_modules/
+dist/
 .wrangler/
 .dev.vars
 .env
@@ -24,4 +25,3 @@ Thumbs.db
 # Editor files
 .vscode/
 .idea/
-

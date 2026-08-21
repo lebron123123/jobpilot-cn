@@ -2,7 +2,7 @@
   "name": "jobpilot-cn",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "dev": "node server.js", "test": "node tests/auth-e2e.mjs && node tests/e2e-api.mjs" },
+  "scripts": { "dev": "node server.js", "build": "node scripts/build-pages.mjs", "test": "node tests/auth-e2e.mjs && node tests/e2e-api.mjs" },
   "engines": { "node": ">=20" },
   "dependencies": {
     "docx": "9.6.1",
