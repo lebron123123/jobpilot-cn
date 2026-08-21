@@ -56,6 +56,43 @@ git log --oneline -5
 
 发布前记录当前 Git commit。若新版本异常，切回已验证 commit 后重新执行 `docker compose ... up -d --build`。数据卷不会随容器重建删除。
 
+### GitHub Actions 自动部署
+
+仓库包含 `.github/workflows/deploy-tencent.yml`。默认情况下，推送 `main` 不会部署；只有仓库变量 `TENCENT_AUTO_DEPLOY=true` 后才会自动部署。`v1.0.0`、`v1.1.0` 等版本标签和手动运行工作流始终会触发部署。
+
+在服务器生成专用密钥（不要使用服务器登录密码）：
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/jobpilot_github_actions -N '' -C github-actions-jobpilot
+cat ~/.ssh/jobpilot_github_actions.pub >> ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+```
+
+在 GitHub 仓库 `Settings > Secrets and variables > Actions` 添加4个 Repository secrets：
+
+| Secret | 值 |
+| --- | --- |
+| `TENCENT_SERVER_HOST` | 服务器公网IP |
+| `TENCENT_SERVER_USER` | `ubuntu` |
+| `TENCENT_SERVER_SSH_KEY` | `cat ~/.ssh/jobpilot_github_actions` 的完整私钥，只粘贴到GitHub，禁止截图或发送到聊天 |
+| `TENCENT_SERVER_KNOWN_HOSTS` | 下方命令输出的完整一行 |
+
+生成已固定的服务器Host Key记录：
+
+```bash
+printf '%s ' '你的服务器公网IP'; sudo awk '{print $1, $2}' /etc/ssh/ssh_host_ed25519_key.pub
+```
+
+最后在 GitHub `Variables` 新建 `TENCENT_AUTO_DEPLOY=true`，再进入 `Actions > Deploy Tencent Production > Run workflow` 做首次联调。有正式用户后把该变量改为 `false`，只用版本标签发布：
+
+```bash
+git tag -a v1.0.0 -m 'JobPilot CN v1.0.0'
+git push origin v1.0.0
+```
+
+自动部署会锁定精确Git提交、执行快进更新、重建容器并验证应用健康状态。部署失败会在Actions中标红并输出末尾日志；当前单机阶段尚未实现自动回滚。
+
 ## 5. 数据备份与当前边界
 
 首台服务器使用 Docker 持久卷保存账号状态和生成文件。每日备份 `jobpilot_data` 和 `jobpilot_generated` 两个卷，并在异机做恢复演练。

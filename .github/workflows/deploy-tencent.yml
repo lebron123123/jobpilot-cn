@@ -1,0 +1,40 @@
+name: Deploy Tencent Production
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+  workflow_dispatch:
+
+concurrency:
+  group: tencent-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.ref, 'refs/tags/v') ||
+      (github.ref == 'refs/heads/main' && vars.TENCENT_AUTO_DEPLOY == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: production
+    steps:
+      - name: Configure dedicated SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.TENCENT_SERVER_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.TENCENT_SERVER_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy exact Git revision
+        env:
+          SERVER_HOST: ${{ secrets.TENCENT_SERVER_HOST }}
+          SERVER_USER: ${{ secrets.TENCENT_SERVER_USER }}
+        run: |
+          ssh -o BatchMode=yes -o IdentitiesOnly=yes "$SERVER_USER@$SERVER_HOST" \
+            "cd /home/ubuntu/jobpilot-cn && git fetch --prune --tags origin && git merge --ff-only '${GITHUB_SHA}' && bash scripts/deploy-tencent.sh '${GITHUB_SHA}'"
