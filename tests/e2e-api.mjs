@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-const base='http://127.0.0.1:4173';
+const base=process.env.TEST_BASE_URL||'http://127.0.0.1:4173';
 let sessionCookie='';
 const request=async(url,options={})=>{const r=await fetch(base+url,{headers:{'Content-Type':'application/json',...(sessionCookie?{Cookie:sessionCookie}:{})},...options});const j=await r.json();if(!r.ok)throw new Error(`${url}: ${j.error}`);return j};
 const authRequest=async(url,payload)=>{const r=await fetch(base+url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}),j=await r.json();if(!r.ok)throw new Error(`${url}: ${j.error}`);sessionCookie=r.headers.getSetCookie()[0]?.split(';')[0]||sessionCookie;return j};

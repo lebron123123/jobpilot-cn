@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const base = 'http://127.0.0.1:4173';
+const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:4173';
 const projectDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const token = String(Date.now());
 const phones = [`139${token.slice(-8)}`, `138${token.slice(-8)}`];

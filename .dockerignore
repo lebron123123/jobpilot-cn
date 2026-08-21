@@ -1,0 +1,16 @@
+.git
+.github
+.wrangler
+node_modules
+dist
+data
+generated
+browser-results
+browser-profile
+screenshots
+.env
+.env.*
+!.env.example
+*.log
+*.docx
+*.pdf
