@@ -2,7 +2,7 @@
   "name": "jobpilot-cn",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "dev": "node server.js", "start": "node server.js", "build": "node scripts/build-pages.mjs", "test": "node tests/tencent-sms.mjs && node tests/auth-e2e.mjs && node tests/e2e-api.mjs && node scripts/cleanup-test-data.cjs", "test:cleanup": "node scripts/cleanup-test-data.cjs" },
+  "scripts": { "dev": "node server.js", "start": "node server.js", "build": "node scripts/build-pages.mjs", "test": "node tests/tencent-sms.mjs && node tests/tencent-ses.mjs && node tests/auth-e2e.mjs && node tests/e2e-api.mjs && node scripts/cleanup-test-data.cjs", "test:cleanup": "node scripts/cleanup-test-data.cjs" },
   "engines": { "node": ">=20" },
   "dependencies": {
     "docx": "9.6.1",

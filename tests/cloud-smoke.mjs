@@ -1,7 +1,7 @@
 const base = process.env.CLOUD_SMOKE_BASE;
-const phone = process.env.CLOUD_SMOKE_PHONE;
+const account = process.env.CLOUD_SMOKE_ACCOUNT || process.env.CLOUD_SMOKE_PHONE;
 const password = process.env.CLOUD_SMOKE_PASSWORD;
-if (!base || !phone || !password) throw new Error('CLOUD_SMOKE_BASE/PHONE/PASSWORD are required');
+if (!base || !account || !password) throw new Error('CLOUD_SMOKE_BASE/CLOUD_SMOKE_ACCOUNT/CLOUD_SMOKE_PASSWORD are required');
 
 let cookie = '';
 async function call(url, options = {}, expected = 200) {
@@ -14,9 +14,9 @@ async function call(url, options = {}, expected = 200) {
   return { response, data };
 }
 
-await call('/api/auth/login', { method: 'POST', body: JSON.stringify({ phone, password }) });
+await call('/api/auth/login', { method: 'POST', body: JSON.stringify({ account, password }) });
 const initial = await call('/api/state');
-if (initial.data.user.phone !== phone || initial.data.jobs.length !== 0) throw new Error('isolated initial state invalid');
+if (![initial.data.user.email, initial.data.user.phone].includes(account) || initial.data.jobs.length !== 0) throw new Error('isolated initial state invalid');
 const seeded = await call('/api/jobs/seed', { method: 'POST', body: '{}' });
 if (seeded.data.added.length !== 3) throw new Error('cloud seed failed');
 const state = await call('/api/state');
@@ -34,4 +34,3 @@ const interview = await call('/api/interview/session', { method: 'POST', body: J
 const answer = await call('/api/interview/answer', { method: 'POST', body: JSON.stringify({ sessionId: interview.data.session.id, question: interview.data.session.questions[0], answer: '我负责推进30个客户任务，完成2个项目结果，并通过复盘持续改进。' }) });
 await call('/api/auth/logout', { method: 'POST', body: '{}' });
 console.log(JSON.stringify({ ok: true, user: initial.data.user.name, jobs: state.data.jobs.length, docxBytes: bytes.length, dedupe: true, interviewScore: answer.data.score }, null, 2));
-
