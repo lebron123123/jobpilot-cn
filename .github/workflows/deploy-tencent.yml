@@ -40,4 +40,11 @@ jobs:
           SERVER_USER: ${{ secrets.TENCENT_SERVER_USER }}
         run: |
           ssh -o BatchMode=yes -o IdentitiesOnly=yes "$SERVER_USER@$SERVER_HOST" \
-            "cd /home/ubuntu/jobpilot-cn && git fetch --prune --tags origin && git merge --ff-only '${GITHUB_SHA}' && bash scripts/deploy-tencent.sh '${GITHUB_SHA}'"
+            "cd /home/ubuntu/jobpilot-cn && \
+             for attempt in 1 2 3 4; do \
+               git fetch --prune --tags origin && break; \
+               test \"\$attempt\" -eq 4 && exit 128; \
+               echo '[deploy] GitHub fetch failed; retrying'; sleep \$((attempt * 5)); \
+             done && \
+             git merge --ff-only '${GITHUB_SHA}' && \
+             JOBPILOT_SKIP_GIT_SYNC=1 bash scripts/deploy-tencent.sh '${GITHUB_SHA}'"

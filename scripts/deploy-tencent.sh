@@ -6,8 +6,24 @@ target_ref="${1:-origin/main}"
 cd "$project_dir"
 
 echo "[deploy] target=$target_ref current=$(git rev-parse --short HEAD)"
-git fetch --prune --tags origin
-git merge --ff-only "$target_ref"
+if [[ "${JOBPILOT_SKIP_GIT_SYNC:-0}" != "1" ]]; then
+  fetched=0
+  for attempt in 1 2 3 4; do
+    if git fetch --prune --tags origin; then
+      fetched=1
+      break
+    fi
+    echo "[deploy] GitHub fetch failed; retrying ($attempt/4)"
+    sleep $((attempt * 5))
+  done
+  [[ "$fetched" == "1" ]] || { echo "[deploy] GitHub fetch failed after 4 attempts" >&2; exit 128; }
+  git merge --ff-only "$target_ref"
+else
+  [[ "$(git rev-parse HEAD)" == "$(git rev-parse "$target_ref")" ]] || {
+    echo "[deploy] checked-out commit does not match $target_ref" >&2
+    exit 1
+  }
+fi
 
 docker compose --env-file .env.production config --quiet
 docker compose --env-file .env.production build app
